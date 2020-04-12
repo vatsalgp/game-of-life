@@ -18,7 +18,7 @@ function draw() {
     for (let y = 0; y < cellsY; y++) {
         cells.push([]);
         for (let x = 0; x < cellsX; x++) {
-            cells[y].push(new Cell(x, y));
+            cells[y].push(new Cell(y, x));
             cells[y][x].show(cellWidth, cellHeight);
         }
     }
