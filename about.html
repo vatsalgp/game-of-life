@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Game of Life - About</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+		/>
+	</head>
+	<body>
+		<div class="ui container">
+			<h1>Game of Life</h1>
+			<h2>About</h2>
+			<ul>
+				<li>
+					The game is a zero-player game, that is its evolution is
+					determined by its initial state, requiring no further input.
+				</li>
+				<li>
+					One interacts with the Game of Life by creating an initial
+					configuration and observing how it evolves.
+				</li>
+				<li>
+					It is Turing complete and can simulate any other Turing
+					machine.
+				</li>
+				<li>
+					<a
+						href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+						target="_blank"
+					>
+						Wikipedia Link
+					</a>
+				</li>
+			</ul>
+			<h2>Rules</h2>
+			<ul>
+				<li>
+					Any live cell with two or three live neighbors survives.
+				</li>
+				<li>Any dead cell with three live neighbors becomes live.</li>
+				<li>All other cells remain dead.</li>
+			</ul>
+			<h2>Mechanics</h2>
+			<ul>
+				<li>Click on a cell to toggle its state.</li>
+				<li>Press Enter for passage of time.</li>
+			</ul>
+			<form action="./" method="get">
+				<button class="ui button massive red">Play</button>
+			</form>
+		</div>
+	</body>
+</html>
