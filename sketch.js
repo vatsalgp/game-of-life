@@ -1,5 +1,5 @@
-const cellsX = 20;
-const cellsY = 10;
+const cellsX = 12;
+const cellsY = 6;
 let cellWidth = 0;
 let cellHeight = 0;
 let cells = [];
