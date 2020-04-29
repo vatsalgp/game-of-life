@@ -4,7 +4,6 @@ const cellsY = 7;
 let cellWidth = 0;
 let cellHeight = 0;
 let cells = [];
-let cellsToToggle = [];
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -33,9 +32,11 @@ function mouseClicked() {
     cells[y][x].click();
 }
 function iterate() {
+    let cellsToToggle = [];
     for (const col of cells)
         for (const cell of col)
-            cellToToggle(cell, aliveNeighbours(cell));
+            cellToToggle(cell, aliveNeighbours(cell), cellsToToggle);
+    return cellsToToggle;
 }
 function aliveNeighbours(cell) {
     let aliveNeighbours = 0;
@@ -45,7 +46,7 @@ function aliveNeighbours(cell) {
             aliveNeighbours++;
     return aliveNeighbours;
 }
-function cellToToggle(cell, aliveNeighbours) {
+function cellToToggle(cell, aliveNeighbours, cellsToToggle) {
     if (cell.clicked) {
         //Cell is ALive
         if (!(aliveNeighbours == 2 || aliveNeighbours == 3))
@@ -81,14 +82,12 @@ function cellExists([y, x]) {
 function positionExists(position, limit) {
     return position >= 0 && position < limit;
 }
-function toggleCells() {
+function toggleCells(cellsToToggle) {
     for (const cell of cellsToToggle)
         cell.click();
     cellsToToggle = [];
 }
 function keyPressed() {
-    if (keyCode === ENTER) {
-        iterate();
-        toggleCells();
-    }
+    if (keyCode === ENTER)
+        toggleCells(iterate());
 }
