@@ -1,25 +1,29 @@
-const cellsX = 12;
-const cellsY = 6;
+const cellsX = 13;
+const cellsY = 7;
+
 let cellWidth = 0;
 let cellHeight = 0;
 let cells = [];
+let cellsToToggle = [];
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
-
-function draw() {
-    cellWidth = width / cellsX;
-    cellHeight = height / cellsY;
     for (let y = 0; y < cellsY; y++) {
         cells.push([]);
         for (let x = 0; x < cellsX; x++) {
             cells[y].push(new Cell(y, x));
-            cells[y][x].show(cellWidth, cellHeight);
+        }
+    }
+}
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+function draw() {
+    cellWidth = width / cellsX;
+    cellHeight = height / cellsY;
+    for (const col of cells) {
+        for (const cell of col) {
+            cell.show(cellWidth, cellHeight);
         }
     }
 }
@@ -29,36 +33,33 @@ function mouseClicked() {
     cells[y][x].click();
 }
 function iterate() {
-    let cellsToToggle = [];
-    for (const col of cells) {
-        for (const cell of col) {
-            let aliveNeighbours = 0;
-            const neighbours = adjacent(cell);
-            for (const neighbour of neighbours) {
-                if (cells[neighbour[0]][neighbour[1]].clicked)
-                    aliveNeighbours++;
-            }
-            if (cell.clicked) {
-                //Cell is ALive
-                if (aliveNeighbours == 2 || aliveNeighbours == 3) {
-                    //Lives next round
-                }
-                else {
-                    //Dies next round
-                    cellsToToggle.push(cell);
-                }
-            } else {
-                //Cell is Dead
-                if (aliveNeighbours == 3) {
-                    //Cell gets born
-                    cellsToToggle.push(cell);
-                }
-            }
-        }
+    for (const col of cells)
+        for (const cell of col)
+            cellToToggle(cell, aliveNeighbours(cell));
+}
+function aliveNeighbours(cell) {
+    let aliveNeighbours = 0;
+    const neighbours = adjacent(cell);
+    for (const neighbour of neighbours)
+        if (cells[neighbour[0]][neighbour[1]].clicked)
+            aliveNeighbours++;
+    return aliveNeighbours;
+}
+function cellToToggle(cell, aliveNeighbours) {
+    if (cell.clicked) {
+        //Cell is ALive
+        if (!(aliveNeighbours == 2 || aliveNeighbours == 3))
+            cellsToToggle.push(cell);
+        //Dies next round
+    } else {
+        //Cell is Dead
+        if (aliveNeighbours == 3)
+            cellsToToggle.push(cell);
+        //Cell gets born
     }
-    toggleCells(cellsToToggle);
 }
 function adjacent({ x, y }) {
+    let output = [];
     let cells = [
         [y - 1, x + 1],
         [y - 1, x],
@@ -69,26 +70,25 @@ function adjacent({ x, y }) {
         [y + 1, x],
         [y + 1, x - 1],
     ];
-    let output = [];
-    for (const cell of cells) {
-        if (cellExists(cell)) {
+    for (const cell of cells)
+        if (cellExists(cell))
             output.push(cell);
-        }
-    }
     return output;
 }
-function cellExists(cell) {
-    let y = cell[0], x = cell[1];
-    if (y >= 0 && y < cellsY && x >= 0 && x < cellsX)
-        return true;
-    return false;
+function cellExists([y, x]) {
+    return positionExists(y, cellsY) && positionExists(x, cellsX);
 }
-function toggleCells(cells) {
-    for (const cell of cells) {
+function positionExists(position, limit) {
+    return position >= 0 && position < limit;
+}
+function toggleCells() {
+    for (const cell of cellsToToggle)
         cell.click();
-    }
+    cellsToToggle = [];
 }
 function keyPressed() {
-    if (keyCode === ENTER)
+    if (keyCode === ENTER) {
         iterate();
+        toggleCells();
+    }
 }
