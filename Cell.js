@@ -9,7 +9,6 @@ class Cell {
             fill(255, 204, 0);
         else
             fill("white");
-
         rect(this.x * width, this.y * height, width, height);
         fill("white");
     }

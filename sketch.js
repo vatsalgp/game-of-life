@@ -9,9 +9,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     for (let y = 0; y < cellsY; y++) {
         cells.push([]);
-        for (let x = 0; x < cellsX; x++) {
+        for (let x = 0; x < cellsX; x++)
             cells[y].push(new Cell(y, x));
-        }
     }
 }
 function windowResized() {
@@ -20,11 +19,9 @@ function windowResized() {
 function draw() {
     cellWidth = width / cellsX;
     cellHeight = height / cellsY;
-    for (const col of cells) {
-        for (const cell of col) {
+    for (const col of cells)
+        for (const cell of col)
             cell.show(cellWidth, cellHeight);
-        }
-    }
 }
 function mouseClicked() {
     let x = Math.floor(mouseX / cellWidth);
@@ -60,27 +57,12 @@ function cellToToggle(cell, aliveNeighbours, cellsToToggle) {
     }
 }
 function adjacent({ x, y }) {
-    let output = [];
-    let cells = [
-        [y - 1, x + 1],
-        [y - 1, x],
-        [y - 1, x - 1],
-        [y, x - 1],
-        [y, x + 1],
-        [y + 1, x + 1],
-        [y + 1, x],
-        [y + 1, x - 1],
-    ];
-    for (const cell of cells)
-        if (cellExists(cell))
-            output.push(cell);
+    const output = [];
+    for (let i = -1; i <= 1; i++)
+        for (let j = -1; j <= 1; j++)
+            if (i || j)
+                output.push([(y + i + cellsY) % cellsY, (x + j + cellsX) % cellsX]);
     return output;
-}
-function cellExists([y, x]) {
-    return positionExists(y, cellsY) && positionExists(x, cellsX);
-}
-function positionExists(position, limit) {
-    return position >= 0 && position < limit;
 }
 function toggleCells(cellsToToggle) {
     for (const cell of cellsToToggle)
